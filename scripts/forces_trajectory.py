@@ -115,10 +115,6 @@ if __name__ == "__main__":
         mol.set_positions(results["geometry (au)"])
         mol.info["Units"] = "a.u."
 
-        print(results["symbols"])
-        print(mol.get_positions())
-        print(mol.get_momenta())
-        
         # a separate file for each gradient
         for state,gradient in results["gradients (au)"].items():
             #
