@@ -78,8 +78,6 @@ sbatch $options <<EOF
 #SBATCH --mem=${mem}
 #SBATCH --job-name=${name}
 #SBATCH --output=${err}
-### There seems to be a problem with the QChem license on wux29
-#SBATCH --exclude=wux29
 
 #NCPU=\$(wc -l < \$PBS_NODEFILE)
 NNODES=\$(uniq \$PBS_NODEFILE | wc -l)
