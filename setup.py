@@ -23,7 +23,7 @@ with open(path.join(this_dir, 'README.rst'), encoding='utf8') as f:
 scripts = []
 for dirname, dirnames, filenames in os.walk('scripts'):
     for filename in filenames:
-        if filename.endswith('.py'):
+        if filename.endswith('.py') or filename.endswith('.sh'):
             scripts.append(os.path.join(dirname, filename))
 
 setup(
