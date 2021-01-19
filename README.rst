@@ -26,14 +26,15 @@ In 'examples/formaldehyde', run
 .. code-block:: bash
 
    $ sbatch --jobname='create dataset' << EOF
-	forces_trajectory.py   geometries.xyz  qchem.in  --parallel_images=100
+     #!/bin/bash
+	forces_trajectory.py   geometries.xyz  qchem.in  --parallel_images=10
      EOF
 
-After some time, this should produce the following files in extended XYZ format:
+After some time, this should produce the following files in extended XYZ format (using atomic units):
 
  * forces_0.xyz      -   forces in S0
  * forces_1.xyz      -   forces in S1
  * nacvec_0-1.xyz    -   NAC vectors between S0 and S1
 
 
-   
+

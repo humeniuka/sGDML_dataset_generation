@@ -106,12 +106,14 @@ if __name__ == "__main__":
                             molecules,
                             itertools.count(1),
                             itertools.repeat(kwds)) )
-    
+
     # In the first step the force file is overwritten if it exists
     # already, later mode is set to append.
     append = False
+
+    # Save results to file as they keep coming in.
     for igeom,results in enumerate(results_list):
-        mol = ase.atoms.Atoms(results["symbols"])
+        mol = ase.atoms.Atoms(symbols=results["symbols"])
         mol.set_positions(results["geometry (au)"])
         mol.info["Units"] = "a.u."
 

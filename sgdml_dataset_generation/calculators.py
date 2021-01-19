@@ -32,7 +32,7 @@ def run_qchem(atoms, script='grad.in', directory=".", igeo=1, nprocs=1, mem="6Gb
     -------
     results : QChemOutputFile
       dictionary with results of calculation, which can be accessed by the following keys
-        'geometry (au)'             -  cartesian geometry
+        'geometry (au)'             -  cartesian geometry in standard orientation
         'energies (au)'             -  dictionary with excitation energies
         'gradients (au)'            -  dictionary with gradients for each state
         'derivative couplings (au)' -  dictionary with NAC vectors for combinations of states
