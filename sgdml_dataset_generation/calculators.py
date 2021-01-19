@@ -6,26 +6,26 @@ requires the script 'run_qchem.sh'
 import numpy as np
 import os
 import subprocess
+import os.path
 from collections import OrderedDict
 
 from sgdml_dataset_generation.readers.qchem import QChemOutputFile
 
-def run_qchem(atoms, script='grad.in', directory=".", nprocs=1, mem="6Gb"):
+def run_qchem(atoms, script='grad.in', directory=".", igeo=1, nprocs=1, mem="6Gb"):
     """
     run QChem input script and read results from output file
 
     Parameters
     ----------
-    atoms:  ase.atoms.Atoms
+    atoms     : ase.atoms.Atoms
       molecular geometry
-    directory: str
+    directory : str
       directory where the calculation should be performed
-
-    Optional
-    --------
-    nprocs : int
+    igeo      : int
+      id of geometry
+    nprocs    : int
       number of processors
-    mem    : str
+    mem       : str
       allocated memory (e.g. '6Gb', '100Mb')
 
     Returns
@@ -39,7 +39,6 @@ def run_qchem(atoms, script='grad.in', directory=".", nprocs=1, mem="6Gb"):
     """
     # create directory if it does not exist already
     os.system("mkdir -p %s" % directory)
-    output = script.replace(".in", ".out")
     os.system(f"cp {script} {directory}/{script}")
     # update geometry
     geom_lines = []
@@ -48,8 +47,8 @@ def run_qchem(atoms, script='grad.in', directory=".", nprocs=1, mem="6Gb"):
         l = "%2s    %+12.10f   %+12.10f   %+12.10f \n" % (atom.symbol, atom.x, atom.y, atom.z)
         geom_lines.append(l)
 
-    with open(qchem_file) as fh:
-        lines = fh.readlines()
+    with open(f"{directory}/{script}") as f:
+        lines = f.readlines()
 
     # excise old geometry block
     start = None
@@ -70,8 +69,9 @@ def run_qchem(atoms, script='grad.in', directory=".", nprocs=1, mem="6Gb"):
 
     # calculate electronic structure
     #print "running QChem ..."
+    output = directory + '/' + os.path.splitext(script)[0]+'.out'
     # submit calculation to the cluster
-    ret  = os.system(f"cd {directory}; run_qchem.sh --wait {script} {nprocs} {mem}")
+    ret  = os.system(f"cd {directory}; run_qchem.sh {script} {nprocs} {mem}  --wait --job-name={script}-{igeo}")
     if ret != 0:
         # Since the temporary files from each image are deleted, it is very difficult to
         # figure out why a calculation failed. Therefore the content of the log-file

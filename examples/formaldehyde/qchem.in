@@ -1,0 +1,67 @@
+$molecule
+0 1
+ O     0.263307     0.039675     2.206612
+ C    -0.904924    -0.525498     2.031300
+ H    -1.544755    -0.594969     2.930140
+ H    -0.915928    -1.404608     1.360648
+$end
+
+$rem
+        sym_ignore              true
+
+	jobtype			force
+	
+	exchange		wB97X-D
+	basis			def2-SVP
+$end
+
+@@@
+
+$molecule
+	read
+$end
+
+$rem
+	jobtype			force
+	cis_n_roots		2
+	cis_triplets		false
+	rpa			true
+	set_iter		200
+	
+	exchange		wB97X-D
+	basis			def2-SVP
+
+	cis_state_deriv         1
+
+	sym_ignore		true
+	gui			2
+$end
+                
+@@@
+
+$molecule
+	read
+$end
+
+$rem
+	jobtype			sp
+	cis_n_roots		2
+	cis_triplets		false
+	rpa			true
+	set_iter		200
+	
+	exchange		wB97X-D
+	basis			def2-SVP
+
+	cis_der_numstate        2
+	calc_nac		true
+
+	sym_ignore		true
+	gui			2
+$end
+
+$derivative_coupling
+	0 is the reference state
+	0 1
+$end
+

@@ -4,7 +4,7 @@ import argparse
 import itertools
 import sys
 import os
-from os.path import exists
+import os.path
 from multiprocessing import Pool
 import tempfile
 import shutil
@@ -19,8 +19,9 @@ def run_calculator_map(args):
     atoms, igeo, kwds = args
     # create a temporary directory
     directory = "TMP/GEOM_%5.5d" % igeo
-    os.makedirs(directory)
-    res = run_calculator(atoms, directory=directory, **kwds)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    res = run_calculator(atoms, directory=directory, igeo=igeo, **kwds)
     shutil.rmtree(directory)
     return res
     
@@ -76,9 +77,12 @@ if __name__ == "__main__":
         raise KeyError("This script can only be run through a SLURM queue, environment variable SLURM_JOBID not found!")
     """
 
-    if args.calculator == "qchem" and not exists(args.script_file):
-        print(f"ERROR: QChem input script '{args.script_file}' not found in current folder!")
-        exit(-1)
+    if args.calculator == "qchem":
+        if not os.path.exists(args.script_file):
+            raise RuntimeError(f"ERROR: QChem input script '{args.script_file}' not found in current folder!")
+        ext = os.path.splitext(args.script_file)[1]
+        if ext != ".in":
+            raise RuntimeError(f"ERROR: File of extension of QChem input script should be '.in' but got '{ext}'")
 
     molecules = ase.io.iread(args.geometries_file)
     
@@ -109,12 +113,17 @@ if __name__ == "__main__":
     for igeom,results in enumerate(results_list):
         mol = ase.atoms.Atoms(results["symbols"])
         mol.set_positions(results["geometry (au)"])
+        mol.info["Units"] = "a.u."
+
+        print(results["symbols"])
+        print(mol.get_positions())
+        print(mol.get_momenta())
         
         # a separate file for each gradient
         for state,gradient in results["gradients (au)"].items():
             #
             mol.info["Energy"] = results["energies (au)"][state]
-            # forces are stored as 'momenta' 
+            # forces are stored as 'momenta'
             mol.set_momenta( - gradient)
 
             ase.io.extxyz.write_extxyz(f"forces_{state}.xyz", [mol],

@@ -12,9 +12,8 @@
 #
 
 show_help() {
-    echo "Input script $1 does not exist!"
     echo " "
-    echo "  Usage: $(basename $0)  qchem.in  nproc  mem"
+    echo "  Usage: $(basename $0)  qchem.in  nproc  mem  [SLURM options]"
     echo " "
     echo "    submits Q-Chem script qchem.in for calculation with 'nproc' processors"
     echo "    and memory 'mem'. "
@@ -24,33 +23,9 @@ show_help() {
     exit 1
 }
 
-# Additional options for sbatch must precede all arguments
-sbatch_options=""
-while :; do
-    case $1 in
-	-h|--help)
-	    show_help
-	    ;;
-	-w|--wait)
-	    # Wait for the job to finish and return exit code 1 if the
-	    # calculation failed and 0 if it succeded.
-	    echo "Script will hang until the job finishes."
-	    sbatch_options="${sbatch_options} --wait"
-	    shift
-	    ;;
-	--)
-	    # end of options
-	    shift
-	    break
-	    ;;
-	*)
-	    # default case
-	    break
-    esac
-done
-
 if [ ! -f "$1" ]
 then
+    echo "Input script $1 does not exist!"
     show_help
 fi
 
@@ -68,14 +43,26 @@ mem=${3:-6Gb}
 # will be written to as well.
 rundir=$(dirname $job)
 
+# All options (arguments starting with --) are extracted from the command
+# line and are passed on to sbatch.
+options=""
+for var in "$@"
+do
+    if [ "$(echo $var | grep "^--")" != "" ]
+    then
+	options="$options $var"
+    fi
+done
+
 echo "submitting '$job' (using $nproc processors and $mem of memory)"
 
 # The submit script is sent directly to stdin of qsub. Note
 # that all '$' signs have to be escaped ('\$') inside the HERE-document.
+
 # submit to PBS queue
 #qsub <<EOF
 # submit to slurm queue
-sbatch $sbatch_options <<EOF
+sbatch $options <<EOF
 #!/bin/bash
 
 # for Torque
@@ -91,6 +78,8 @@ sbatch $sbatch_options <<EOF
 #SBATCH --mem=${mem}
 #SBATCH --job-name=${name}
 #SBATCH --output=${err}
+### There seems to be a problem with the QChem license on wux29
+#SBATCH --exclude=wux29
 
 #NCPU=\$(wc -l < \$PBS_NODEFILE)
 NNODES=\$(uniq \$PBS_NODEFILE | wc -l)

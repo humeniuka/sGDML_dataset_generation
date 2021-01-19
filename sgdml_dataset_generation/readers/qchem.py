@@ -48,7 +48,6 @@ class QChemOutputFile(object):
             if "Standard Nuclear Orientation (Angstroms)" in line:
                 f.readline()
                 f.readline()
-                f.readline()
                 symbols = []
                 geometry = []
                 while True:
@@ -63,7 +62,7 @@ class QChemOutputFile(object):
                 self._getset('symbols', symbols)
                 self._getset('geometry (au)', geometry / units.bohr_to_angs)
 
-            elif "Total energy in final basis set" in line:
+            elif "Total energy in the final basis set" in line:
                 parts = line.split()
                 self._getset('scf energy', float(parts[8]))
             

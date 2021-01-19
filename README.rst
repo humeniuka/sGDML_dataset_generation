@@ -20,10 +20,20 @@ Installation
    
 Getting Started
 ---------------
-   
+
+In 'examples/formaldehyde', run
+
 .. code-block:: bash
 
-   $ forces_trajectory.py   geometries.xyz  qchem.in  --parallel_images=100
+   $ sbatch --jobname='create dataset' << EOF
+	forces_trajectory.py   geometries.xyz  qchem.in  --parallel_images=100
+     EOF
+
+After some time, this should produce the following files in extended XYZ format:
+
+ * forces_0.xyz      -   forces in S0
+ * forces_1.xyz      -   forces in S1
+ * nacvec_0-1.xyz    -   NAC vectors between S0 and S1
 
 
    
