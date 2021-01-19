@@ -25,7 +25,7 @@ In 'examples/formaldehyde', run
 
 .. code-block:: bash
 
-   $ sbatch --jobname='create dataset' << EOF
+   $ sbatch --job-name='create dataset' << EOF
      #!/bin/bash
 	forces_trajectory.py   geometries.xyz  qchem.in  --parallel_images=10
      EOF
