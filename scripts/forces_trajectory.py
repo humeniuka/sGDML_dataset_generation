@@ -88,8 +88,11 @@ if __name__ == "__main__":
     pool = Pool(args.parallel_images)
 
     # additional keywords controlling electronic structure calculation
-    kwds = { "nprocs" : args.procs_per_image,
-             "mem": args.mem_per_image }
+    kwds = {
+        "script" : args.script_file,
+        "nprocs" : args.procs_per_image,
+        "mem": args.mem_per_image
+    }
 
     # With python2 imap(...) returns a list of all results after the last
     # calculation has finished, with python3 the results are returned as

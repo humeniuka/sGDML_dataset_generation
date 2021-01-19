@@ -64,9 +64,9 @@ def run_qchem(atoms, script='grad.in', directory=".", nprocs=1, mem="6Gb"):
     # in line start+1 is left as is.
     lines = lines[0:start+2] + geom_lines + lines[end:]
 
-    with open(qchem_file, "w") as fh:
+    with open(f"{directory}/{script}", "w") as f:
         for l in lines:
-            fh.write(l)
+            f.write(l)
 
     # calculate electronic structure
     #print "running QChem ..."
