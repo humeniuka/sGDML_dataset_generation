@@ -76,7 +76,7 @@ def run_qchem(atoms, script='grad.in', directory=".", igeo=1, nprocs=1, mem="6Gb
         # Since the temporary files from each image are deleted, it is very difficult to
         # figure out why a calculation failed. Therefore the content of the log-file
         # is printed if the calculation failed.
-        print(f" ****** content of log-file {directory}/{output} ****** " % directory)
+        print(f" ****** content of log-file {directory}/{output} ****** ")
         os.system(f"cat {directory}/{output}")
         print(f" ****** end of log-file ****** ")
         print(f"Return status = {ret}, error in QChem calculation, see error messages above !")
