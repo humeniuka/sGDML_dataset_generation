@@ -36,12 +36,12 @@ parser.add_argument(
         + ']',
 )
 parser.add_argument('geometry_input',
-                    type=str, metavar='geometry.xyz', help='molecular geometry in any format supported by ASE')
+                    type=str, metavar='initial.xyz', help='molecular geometry in any format supported by ASE')
 parser.add_argument('-o', '--output',
                     dest='samples_output',
                     type=str,
-                    metavar='samples.dyn.xyz',
-                    default='samples.dyn.xyz',
+                    metavar='geometries.xyz',
+                    default='geometries.xyz',
                     help='samples along ground state trajectory are saved to this file.')
 parser.add_argument(
     '--cuda',
