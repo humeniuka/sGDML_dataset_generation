@@ -50,7 +50,7 @@ setup(
     author_email='alexander.humeniuk@gmail.com',
     license='LICENSE.txt',
     packages=find_packages(),
-    install_requires=['numpy', 'ase'],
+    install_requires=['numpy', 'ase', 'torchani'],
     scripts=scripts,
     include_package_data=True,
     zip_safe=False,

@@ -11,7 +11,7 @@ Requirements
 
  * QChem
  * SLURM queue
-
+   
 Installation
 ------------
 .. code-block:: bash
@@ -37,4 +37,10 @@ After some time, this should produce the following files in extended XYZ format 
  * nacvec_0-1.xyz    -   NAC vectors between S0 and S1
 
 
+Geometries at which the forces are calculated, can be sampled from the Maxwell-Boltzmann distribution
+by running molecular dynamics at constant temperature with the ANI1cxx force field.
+
+.. code-block:: bash
+
+   $ ani1cxx_dynamics.xyz  initial.xyz  geometries.xyz
 
