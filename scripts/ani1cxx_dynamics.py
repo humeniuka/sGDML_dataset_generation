@@ -86,9 +86,8 @@ atoms = ase.io.read(args.geometry_input)
 model = torchani.models.ANI1ccx(periodic_table_index=True).double().to(device)
 atoms.calc = torchani.ase.Calculator(atoms.get_chemical_symbols(), model)
 
-kBT = args.temperature * ase.units.kB,
 # Set the momenta corresponding to given temperature
-MaxwellBoltzmannDistribution(atoms, kBT)
+MaxwellBoltzmannDistribution(atoms, temperature_K=args.temperature)
 # eliminate translation and rotation
 Stationary(atoms)
 ZeroRotation(atoms)
