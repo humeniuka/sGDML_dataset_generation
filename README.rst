@@ -42,5 +42,5 @@ by running molecular dynamics at high temperature with the ANI1cxx force field.
 
 .. code-block:: bash
 
-   $ ani1cxx_dynamics.xyz  initial.xyz --temperature=500.0  -o geometries.xyz 
+   $ ani1cxx_dynamics.py  initial.xyz --temperature=500.0  -o geometries.xyz 
 
