@@ -65,7 +65,10 @@ class QChemOutputFile(object):
             elif "Total energy in the final basis set" in line:
                 parts = line.split()
                 self._getset('scf energy', float(parts[8]))
-            
+                # set ground state energy
+                energies = self._getset('energies (au)', {})
+                energies[0] = self['scf energy']
+                
             elif "TDDFT Excitation Energies" in line:
                 exc_energies = self._getset('excitation energies (eV)', {})
                 osc_strengths = self._getset('oscillator strengths', {})
@@ -83,7 +86,6 @@ class QChemOutputFile(object):
                         osc_strengths[state] = float(parts[2])
                 # total energies of all states
                 energies = self._getset('energies (au)', {})
-                energies[0] = self['scf energy']
                 for state, en_ex in self['excitation energies (eV)'].items():
                     energies[state] = energies[0] + en_ex / units.hartree_to_ev
             elif "between states " in line:
