@@ -83,6 +83,8 @@ logger.info(f"running on device {device}")
     
 atoms = ase.io.read(args.geometry_input)
 
+assert set(atoms.get_chemical_symbols()) - set(['H', 'C', 'N', 'O']) == set(), "ANI1ccx is only parametrized for H,C,N,O"
+
 model = torchani.models.ANI1ccx(periodic_table_index=True).double().to(device)
 atoms.calc = torchani.ase.Calculator(atoms.get_chemical_symbols(), model)
 
