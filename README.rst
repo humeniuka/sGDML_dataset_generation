@@ -38,9 +38,9 @@ After some time, this should produce the following files in extended XYZ format 
 
 
 Geometries at which the forces are calculated, can be sampled from the Maxwell-Boltzmann distribution
-by running molecular dynamics at high temperature with the ANI1cxx force field.
+by running molecular dynamics at high temperature with the ANI-2x force field.
 
 .. code-block:: bash
 
-   $ ani1cxx_dynamics.py  initial.xyz --temperature=500.0  -o geometries.xyz 
+   $ ani2x_dynamics.py  initial.xyz --temperature=500.0  -o geometries.xyz 
 

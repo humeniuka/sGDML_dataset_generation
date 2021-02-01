@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-run molecular dynamics with ANI1ccx at constant temperature to generate a Maxwell-Boltzmann distributed
+run molecular dynamics with ANI-2x at constant temperature to generate a Maxwell-Boltzmann distributed
 ensemble of geometries
 """
 import argparse
@@ -83,9 +83,9 @@ logger.info(f"running on device {device}")
     
 atoms = ase.io.read(args.geometry_input)
 
-assert set(atoms.get_chemical_symbols()) - set(['H', 'C', 'N', 'O']) == set(), "ANI1ccx is only parametrized for H,C,N,O"
+assert set(atoms.get_chemical_symbols()) - set(['H', 'C', 'N', 'O', 'F', 'S', 'Cl']) == set(), "ANI-2x is only parametrized for H,C,N,O,F,S,Cl"
 
-model = torchani.models.ANI1ccx(periodic_table_index=True).double().to(device)
+model = torchani.models.ANI2x(periodic_table_index=True).double().to(device)
 atoms.calc = torchani.ase.Calculator(atoms.get_chemical_symbols(), model)
 
 # Set the momenta corresponding to given temperature
